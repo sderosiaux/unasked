@@ -65,9 +65,7 @@
               Download for macOS
             </a>
             <span class="hero-free">Free & open source</span>
-            <span class="hero-hint"
-              >Not signed yet? Run: <code>xattr -cr "/Applications/Meeting Copilot.app"</code></span
-            >
+            <button class="hero-hint-btn" onclick="document.getElementById('macos-dialog').showModal()">macOS blocked?</button>
           </div>
           <a href="#how-it-works" class="btn btn-secondary">See how it works</a>
         </div>
@@ -379,6 +377,31 @@
         </div>
       </div>
     </footer>
+
+    <!-- macOS Help Dialog -->
+    <dialog id="macos-dialog" class="macos-dialog">
+      <div class="dialog-content">
+        <button class="dialog-close" onclick="this.closest('dialog').close()">&times;</button>
+        <h3>App blocked by macOS?</h3>
+        <p>
+          Since Meeting Copilot isn't notarized by Apple yet, macOS Gatekeeper may block it.
+          This is normal for open-source apps distributed outside the App Store.
+        </p>
+        <p><strong>To fix this:</strong></p>
+        <ol>
+          <li>Open <strong>Terminal</strong> (search for it in Spotlight)</li>
+          <li>Copy and paste this command:</li>
+        </ol>
+        <div class="dialog-code">
+          <code>xattr -cr "/Applications/Meeting Copilot.app"</code>
+          <button class="copy-btn" id="copy-xattr-btn">Copy</button>
+        </div>
+        <ol start="3">
+          <li>Press <strong>Enter</strong> and try opening the app again</li>
+        </ol>
+        <p class="dialog-note">This removes the quarantine flag that macOS adds to downloaded files.</p>
+      </div>
+    </dialog>
 
     <script src="script.js"></script>
   </body>

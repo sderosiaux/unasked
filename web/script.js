@@ -160,4 +160,16 @@ function detectArchitecture() {
 document.addEventListener('DOMContentLoaded', () => {
   fetchLatestRelease()
   detectArchitecture()
+
+  // Copy xattr command button
+  const copyBtn = document.getElementById('copy-xattr-btn')
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText('xattr -cr "/Applications/Meeting Copilot.app"')
+      copyBtn.textContent = 'Copied!'
+      setTimeout(() => {
+        copyBtn.textContent = 'Copy'
+      }, 2000)
+    })
+  }
 })
