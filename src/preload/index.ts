@@ -105,7 +105,32 @@ const api = {
     return () => {
       ipcRenderer.removeListener('meeting:saved', handler)
     }
+  },
+
+  // Auto-updater
+  checkForUpdates: (): Promise<UpdateStatus> => ipcRenderer.invoke('updater:check'),
+  downloadUpdate: (): Promise<void> => ipcRenderer.invoke('updater:download'),
+  installUpdate: (): Promise<void> => ipcRenderer.invoke('updater:install'),
+  getUpdateStatus: (): Promise<UpdateStatus> => ipcRenderer.invoke('updater:getStatus'),
+
+  onUpdateStatus: (callback: (status: UpdateStatus) => void): (() => void) => {
+    const handler = (_event: Electron.IpcRendererEvent, status: UpdateStatus): void => {
+      callback(status)
+    }
+    ipcRenderer.on('updater:status', handler)
+    return () => {
+      ipcRenderer.removeListener('updater:status', handler)
+    }
   }
+}
+
+// Update status type
+interface UpdateStatus {
+  status: 'checking' | 'available' | 'not-available' | 'downloading' | 'downloaded' | 'error'
+  version?: string
+  releaseNotes?: string
+  progress?: number
+  error?: string
 }
 
 // Type definitions for meeting history (matching MeetingStorageService)

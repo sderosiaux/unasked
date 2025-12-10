@@ -61,6 +61,14 @@ export interface SearchResult {
   matchText: string
 }
 
+export interface UpdateStatus {
+  status: 'checking' | 'available' | 'not-available' | 'downloading' | 'downloaded' | 'error'
+  version?: string
+  releaseNotes?: string
+  progress?: number
+  error?: string
+}
+
 declare global {
   interface Window {
     electron: ElectronAPI
@@ -92,6 +100,12 @@ declare global {
       deleteMeeting: (id: string) => Promise<boolean>
       updateMeetingTitle: (id: string, title: string) => Promise<boolean>
       onMeetingSaved: (callback: (data: { id: string; title: string }) => void) => () => void
+      // Auto-updater
+      checkForUpdates: () => Promise<UpdateStatus>
+      downloadUpdate: () => Promise<void>
+      installUpdate: () => Promise<void>
+      getUpdateStatus: () => Promise<UpdateStatus>
+      onUpdateStatus: (callback: (status: UpdateStatus) => void) => () => void
     }
   }
 }

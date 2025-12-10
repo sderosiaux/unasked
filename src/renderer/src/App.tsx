@@ -12,6 +12,7 @@ import { DirectResponse } from './components/DirectResponse'
 import { Controls } from './components/Controls'
 import { SettingsModal } from './components/SettingsModal'
 import { MeetingHistory } from './components/MeetingHistory'
+import { UpdateNotification } from './components/UpdateNotification'
 import type { SavedMeeting } from '../../preload/index.d'
 
 function App(): React.JSX.Element {
@@ -206,6 +207,9 @@ function App(): React.JSX.Element {
 
         {/* Direct Response Overlay */}
         <DirectResponse />
+
+        {/* Update Notification */}
+        <UpdateNotification />
       </main>
 
       {/* Footer Controls - only show when meeting is active or has content */}

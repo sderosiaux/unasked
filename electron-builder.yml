@@ -48,5 +48,6 @@ win:
         - x64
 npmRebuild: false
 publish:
-  provider: generic
-  url: https://example.com/auto-updates
+  provider: github
+  owner: sderosiaux
+  repo: meeting-copilot

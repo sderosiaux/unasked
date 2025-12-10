@@ -5,6 +5,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { getMeetingStateManager } from './services/MeetingStateManager'
 import { getSecureStorage } from './services/SecureStorage'
 import { getMeetingStorageService } from './services/MeetingStorageService'
+import { getUpdateService } from './services/UpdateService'
 
 // Load environment variables from .env file
 config()
@@ -25,11 +26,7 @@ function createWindow(): BrowserWindow {
     show: false,
     autoHideMenuBar: true,
     title: 'Meeting Copilot',
-    ...(process.platform === 'linux'
-      ? {
-          icon: join(__dirname, '../../resources/icon.png')
-        }
-      : {}),
+    icon: join(__dirname, '../../resources/icon.png'),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
@@ -118,6 +115,20 @@ app.whenReady().then(() => {
 
   // Set up meeting manager with main window reference
   meetingManager.setMainWindow(mainWindow)
+
+  // Set up update service with main window reference
+  const updateService = getUpdateService()
+  updateService.setMainWindow(mainWindow)
+
+  // Check for updates after window is ready (only in production)
+  if (!is.dev) {
+    mainWindow.once('ready-to-show', () => {
+      // Delay check slightly to not impact app startup
+      setTimeout(() => {
+        updateService.checkForUpdates()
+      }, 3000)
+    })
+  }
 
   // Initialize services
   meetingManager.initialize().catch(console.error)
