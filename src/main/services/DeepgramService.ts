@@ -48,10 +48,10 @@ export class DeepgramService extends EventEmitter {
    * Initialize the Deepgram client with API key.
    */
   initialize(apiKey?: string): boolean {
-    const key = apiKey || process.env.DEEPGRAM_API_KEY
+    const key = apiKey
 
     if (!key) {
-      console.warn('DEEPGRAM_API_KEY not set - transcription will be disabled')
+      console.warn('Deepgram API key not configured - transcription will be disabled')
       this.emit('warning', 'Deepgram API key not configured')
       return false
     }

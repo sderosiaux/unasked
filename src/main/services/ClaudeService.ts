@@ -257,11 +257,11 @@ export class ClaudeService extends EventEmitter {
   }
 
   initialize(apiKey?: string): void {
-    const key = apiKey || process.env.ANTHROPIC_API_KEY
+    const key = apiKey
 
     if (!key) {
-      console.warn('ANTHROPIC_API_KEY not set - Claude analysis will be disabled')
-      this.emit('warning', 'API key not configured')
+      console.warn('Anthropic API key not configured - Claude analysis will be disabled')
+      this.emit('warning', 'Anthropic API key not configured')
       return
     }
 
