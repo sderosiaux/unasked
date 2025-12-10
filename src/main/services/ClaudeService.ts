@@ -1,5 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { EventEmitter } from 'events'
+import { spikelog } from './SpikelogService'
 
 export interface MeetingAnalysis {
   liveSummary: string[]
@@ -310,6 +311,7 @@ export class ClaudeService extends EventEmitter {
       const userMessage = this.buildUserMessage(transcriptToAnalyze)
       console.log('[Claude] Sending to analyze:', userMessage.substring(0, 300))
 
+      const startTime = Date.now()
       const response = await this.client.messages.create({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 2000,
@@ -318,6 +320,11 @@ export class ClaudeService extends EventEmitter {
         tool_choice: { type: 'tool', name: 'analyze_meeting' },
         messages: [...this.conversationHistory, { role: 'user', content: userMessage }]
       })
+      const durationMs = Date.now() - startTime
+
+      // Track metrics
+      spikelog.claudeAnalysisDuration(durationMs)
+      spikelog.claudeTokenUsage(response.usage.input_tokens, response.usage.output_tokens)
 
       // Extract tool use content - this is guaranteed structured JSON
       const toolUse = response.content.find((c) => c.type === 'tool_use')
@@ -358,6 +365,7 @@ export class ClaudeService extends EventEmitter {
       return analysis
     } catch (error) {
       console.error('Claude analysis error:', error)
+      spikelog.apiError('claude', error instanceof Error ? error.message : String(error))
       this.emit('error', error)
       return this.lastAnalysis
     } finally {

@@ -4,6 +4,7 @@ import { getAudioCaptureService, AudioCaptureService } from './AudioCaptureServi
 import { getDeepgramService, DeepgramService, TranscriptionResult } from './DeepgramService'
 import { getClaudeService, ClaudeService, MeetingAnalysis } from './ClaudeService'
 import { getSecureStorage } from './SecureStorage'
+import { spikelog } from './SpikelogService'
 
 export type MeetingStatus = 'idle' | 'recording' | 'paused' | 'processing'
 
@@ -174,6 +175,9 @@ export class MeetingStateManager extends EventEmitter {
       startTime: Date.now()
     }
 
+    // Track active meeting started
+    spikelog.activeMeetings(1)
+
     // Start Deepgram session for real-time transcription
     const sessionStarted = await this.deepgramService.startSession()
     if (!sessionStarted) {
@@ -217,6 +221,13 @@ export class MeetingStateManager extends EventEmitter {
   }
 
   reset(): void {
+    // Track meeting duration before reset
+    if (this.state.startTime) {
+      const durationMinutes = (Date.now() - this.state.startTime) / 1000 / 60
+      spikelog.meetingDuration(Math.round(durationMinutes * 10) / 10) // 1 decimal place
+      spikelog.activeMeetings(-1)
+    }
+
     this.audioService.stop()
     this.deepgramService.endSession()
     this.claudeService.reset()
@@ -307,6 +318,20 @@ export class MeetingStateManager extends EventEmitter {
     }
 
     this.state.lastUpdateTime = Date.now()
+
+    // Track insights extracted
+    spikelog.insightsExtracted({
+      decisions: analysis.decisions.length,
+      actions: analysis.actions.length,
+      questions: analysis.openQuestions.length,
+      loops: analysis.loops.length
+    })
+
+    // Track loops detected
+    if (analysis.loops.length > 0) {
+      spikelog.loopsDetected(analysis.loops.length)
+    }
+
     this.broadcastState()
   }
 

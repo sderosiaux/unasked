@@ -1,5 +1,6 @@
 import { createClient, LiveTranscriptionEvents, LiveClient } from '@deepgram/sdk'
 import { EventEmitter } from 'events'
+import { spikelog } from './SpikelogService'
 
 export interface TranscriptionResult {
   text: string
@@ -119,6 +120,7 @@ export class DeepgramService extends EventEmitter {
       return true
     } catch (error) {
       console.error('Failed to start Deepgram session:', error)
+      spikelog.apiError('deepgram', error instanceof Error ? error.message : String(error))
       this.emit('error', error)
       return false
     }
