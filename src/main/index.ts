@@ -9,6 +9,9 @@ import { getMeetingStorageService } from './services/MeetingStorageService'
 // Load environment variables from .env file
 config()
 
+// Set app name for dev mode (production uses productName from electron-builder)
+app.setName('Meeting Copilot')
+
 // Initialize the meeting state manager
 const meetingManager = getMeetingStateManager()
 
@@ -21,8 +24,7 @@ function createWindow(): BrowserWindow {
     minHeight: 600,
     show: false,
     autoHideMenuBar: true,
-    titleBarStyle: 'hiddenInset',
-    trafficLightPosition: { x: 15, y: 10 },
+    title: 'Meeting Copilot',
     ...(process.platform === 'linux'
       ? {
           icon: join(__dirname, '../../resources/icon.png')

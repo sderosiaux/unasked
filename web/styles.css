@@ -570,7 +570,6 @@ a {
 .how-it-works-image {
   margin: 0 auto 60px;
   max-width: 900px;
-  border-radius: 16px;
   overflow: hidden;
 }
 
@@ -578,6 +577,14 @@ a {
   width: 100%;
   height: auto;
   display: block;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
 .steps {
