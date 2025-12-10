@@ -24,7 +24,7 @@ Download Unasked for macOS from the [Releases page](https://github.com/sderosiau
 
 ## Website
 
-Visit [sderosiaux.github.io/unasked](https://sderosiaux.github.io/unasked) to learn more.
+Visit [unasked.ai](https://unasked.ai) to learn more.
 
 ---
 
