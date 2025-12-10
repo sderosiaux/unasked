@@ -33,10 +33,7 @@ module.exports = {
       'warn',
       { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
     ],
-    '@typescript-eslint/explicit-function-return-type': [
-      'warn',
-      { allowExpressions: true }
-    ]
+    '@typescript-eslint/explicit-function-return-type': ['warn', { allowExpressions: true }]
   },
   ignorePatterns: ['out', 'dist', 'node_modules']
 }

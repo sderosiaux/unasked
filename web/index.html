@@ -1,261 +1,325 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meeting Copilot - AI-Powered Meeting Intelligence</title>
-  <meta name="description" content="Real-time meeting transcription and analysis. Extract decisions, actions, and insights automatically.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <!-- Navigation -->
-  <nav class="nav">
-    <div class="nav-container">
-      <a href="/" class="nav-logo">
-        <svg class="nav-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
-        </svg>
-        <span>Meeting Copilot</span>
-      </a>
-      <div class="nav-links">
-        <a href="#features">Features</a>
-        <a href="#how-it-works">How it works</a>
-        <a href="#download" class="nav-cta">Download</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-container">
-      <h1 class="hero-title">
-        Your meetings,<br>
-        <span class="gradient-text">understood.</span>
-      </h1>
-      <p class="hero-subtitle">
-        Real-time transcription and AI analysis that captures decisions,
-        actions, and tensions—so you can focus on the conversation.
-      </p>
-      <div class="hero-cta">
-        <a href="#download" class="btn btn-primary">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meeting Copilot - AI-Powered Meeting Intelligence</title>
+    <meta
+      name="description"
+      content="Real-time meeting transcription and analysis. Extract decisions, actions, and insights automatically."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="nav">
+      <div class="nav-container">
+        <a href="/" class="nav-logo">
+          <svg
+            class="nav-logo-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+            />
           </svg>
-          Download for macOS
+          <span>Meeting Copilot</span>
         </a>
-        <a href="#how-it-works" class="btn btn-secondary">See how it works</a>
-      </div>
-      <div class="hero-image">
-        <div class="app-window">
-          <div class="app-window-header">
-            <div class="window-dots">
-              <span class="dot dot-red"></span>
-              <span class="dot dot-yellow"></span>
-              <span class="dot dot-green"></span>
-            </div>
-          </div>
-          <div class="app-window-content">
-            <div class="mock-ui">
-              <div class="mock-panel mock-decisions">
-                <div class="mock-panel-header">
-                  <span class="mock-title">Decisions</span>
-                  <span class="mock-badge">3</span>
-                </div>
-                <div class="mock-item">
-                  <span class="mock-icon check">✓</span>
-                  <span>API → microservices architecture</span>
-                </div>
-                <div class="mock-item">
-                  <span class="mock-icon check">✓</span>
-                  <span>Launch date: Q2 2025</span>
-                </div>
-                <div class="mock-item priority-high">
-                  <span class="mock-icon alert">!!</span>
-                  <span>Budget approved: 50k</span>
-                </div>
-              </div>
-              <div class="mock-panel mock-actions">
-                <div class="mock-panel-header">
-                  <span class="mock-title">Actions</span>
-                  <span class="mock-badge blue">4</span>
-                </div>
-                <div class="mock-item">
-                  <span class="mock-icon arrow">→</span>
-                  <span><strong>Sarah:</strong> Draft proposal</span>
-                </div>
-                <div class="mock-item priority-high">
-                  <span class="mock-icon alert">!!</span>
-                  <span><strong>Mike:</strong> Review security</span>
-                </div>
-                <div class="mock-item">
-                  <span class="mock-icon arrow">→</span>
-                  <span><strong>Team:</strong> Sprint planning</span>
-                </div>
-              </div>
-            </div>
-            <div class="mock-alert">
-              <span class="mock-alert-icon">⚠️</span>
-              <span><strong>Loop detected:</strong> Timeline discussed 3× → Propose: Set deadline now</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Features Section -->
-  <section id="features" class="features">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Everything you missed,<br>captured in real-time</h2>
-        <p class="section-subtitle">Meeting Copilot listens, analyzes, and structures your conversations automatically.</p>
-      </div>
-
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon purple">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
-            </svg>
-          </div>
-          <h3>Real-time Transcription</h3>
-          <p>Powered by Deepgram, your meetings are transcribed instantly with high accuracy in English and French.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon blue">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
-            </svg>
-          </div>
-          <h3>Decisions & Actions</h3>
-          <p>Automatically extracts decisions made and action items with owners and deadlines. Sorted by priority.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon orange">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-            </svg>
-          </div>
-          <h3>Tension Detection</h3>
-          <p>Identifies when discussions loop without progress or when statements contradict each other.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon green">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-          </div>
-          <h3>Open Questions</h3>
-          <p>Tracks questions that were raised but never answered, ensuring nothing falls through the cracks.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon pink">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-            </svg>
-          </div>
-          <h3>Markdown Export</h3>
-          <p>One-click export to clean Markdown. Share meeting notes instantly with your team.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon indigo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-            </svg>
-          </div>
-          <h3>Privacy First</h3>
-          <p>Audio is processed locally and sent directly to APIs. No recordings stored. Your conversations stay private.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- How it Works Section -->
-  <section id="how-it-works" class="how-it-works">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Simple. Powerful. Automatic.</h2>
-        <p class="section-subtitle">Start a meeting and let AI do the heavy lifting.</p>
-      </div>
-
-      <div class="steps">
-        <div class="step">
-          <div class="step-number">1</div>
-          <div class="step-content">
-            <h3>Start your meeting</h3>
-            <p>Click the start button. Meeting Copilot begins capturing audio from your microphone.</p>
-          </div>
-        </div>
-        <div class="step-connector"></div>
-        <div class="step">
-          <div class="step-number">2</div>
-          <div class="step-content">
-            <h3>Real-time analysis</h3>
-            <p>Every 8 seconds, Claude AI analyzes the conversation and extracts structured insights.</p>
-          </div>
-        </div>
-        <div class="step-connector"></div>
-        <div class="step">
-          <div class="step-number">3</div>
-          <div class="step-content">
-            <h3>Export & share</h3>
-            <p>When you're done, copy everything to Markdown and share with your team.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Download Section -->
-  <section id="download" class="download">
-    <div class="container">
-      <div class="download-card">
-        <h2>Ready to transform your meetings?</h2>
-        <p>Download Meeting Copilot for macOS and never miss an insight again.</p>
-        <a href="#" id="download-btn" class="btn btn-primary btn-large" data-repo="sderosiaux/meeting-copilot">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-          </svg>
-          <span id="download-text">Download for macOS</span>
-        </a>
-        <p class="download-note">Requires macOS 12+ · Intel & Apple Silicon</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-brand">
-          <a href="/" class="nav-logo">
-            <svg class="nav-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
-            </svg>
-            <span>Meeting Copilot</span>
-          </a>
-          <p>AI-powered meeting intelligence for productive teams.</p>
-        </div>
-        <div class="footer-links">
-          <a href="https://github.com/sderosiaux/meeting-copilot" target="_blank">GitHub</a>
+        <div class="nav-links">
           <a href="#features">Features</a>
           <a href="#how-it-works">How it works</a>
+          <a href="#download" class="nav-cta">Download</a>
         </div>
       </div>
-      <div class="footer-bottom">
-        <p>&copy; 2024 Meeting Copilot. Built with Claude AI.</p>
-      </div>
-    </div>
-  </footer>
+    </nav>
 
-  <script src="script.js"></script>
-</body>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-container">
+        <h1 class="hero-title">
+          Your meetings,<br />
+          <span class="gradient-text">understood.</span>
+        </h1>
+        <p class="hero-subtitle">
+          Real-time transcription and AI analysis that captures decisions, actions, and tensions—so
+          you can focus on the conversation.
+        </p>
+        <div class="hero-cta">
+          <a href="#download" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+            </svg>
+            Download for macOS
+          </a>
+          <a href="#how-it-works" class="btn btn-secondary">See how it works</a>
+        </div>
+        <div class="hero-image">
+          <div class="app-window">
+            <div class="app-window-header">
+              <div class="window-dots">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+              </div>
+            </div>
+            <div class="app-window-content">
+              <div class="mock-ui">
+                <div class="mock-panel mock-decisions">
+                  <div class="mock-panel-header">
+                    <span class="mock-title">Decisions</span>
+                    <span class="mock-badge">3</span>
+                  </div>
+                  <div class="mock-item">
+                    <span class="mock-icon check">✓</span>
+                    <span>API → microservices architecture</span>
+                  </div>
+                  <div class="mock-item">
+                    <span class="mock-icon check">✓</span>
+                    <span>Launch date: Q2 2025</span>
+                  </div>
+                  <div class="mock-item priority-high">
+                    <span class="mock-icon alert">!!</span>
+                    <span>Budget approved: 50k</span>
+                  </div>
+                </div>
+                <div class="mock-panel mock-actions">
+                  <div class="mock-panel-header">
+                    <span class="mock-title">Actions</span>
+                    <span class="mock-badge blue">4</span>
+                  </div>
+                  <div class="mock-item">
+                    <span class="mock-icon arrow">→</span>
+                    <span><strong>Sarah:</strong> Draft proposal</span>
+                  </div>
+                  <div class="mock-item priority-high">
+                    <span class="mock-icon alert">!!</span>
+                    <span><strong>Mike:</strong> Review security</span>
+                  </div>
+                  <div class="mock-item">
+                    <span class="mock-icon arrow">→</span>
+                    <span><strong>Team:</strong> Sprint planning</span>
+                  </div>
+                </div>
+              </div>
+              <div class="mock-alert">
+                <span class="mock-alert-icon">⚠️</span>
+                <span
+                  ><strong>Loop detected:</strong> Timeline discussed 3× → Propose: Set deadline
+                  now</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Everything you missed,<br />captured in real-time</h2>
+          <p class="section-subtitle">
+            Meeting Copilot listens, analyzes, and structures your conversations automatically.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon purple">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                />
+              </svg>
+            </div>
+            <h3>Real-time Transcription</h3>
+            <p>
+              Powered by Deepgram, your meetings are transcribed instantly with high accuracy in
+              English and French.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                />
+              </svg>
+            </div>
+            <h3>Decisions & Actions</h3>
+            <p>
+              Automatically extracts decisions made and action items with owners and deadlines.
+              Sorted by priority.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon orange">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+            </div>
+            <h3>Tension Detection</h3>
+            <p>
+              Identifies when discussions loop without progress or when statements contradict each
+              other.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <h3>Open Questions</h3>
+            <p>
+              Tracks questions that were raised but never answered, ensuring nothing falls through
+              the cracks.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon pink">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+            </div>
+            <h3>One-Click Export</h3>
+            <p>Copy your meeting notes in one click. Share with your team instantly.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon indigo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                />
+              </svg>
+            </div>
+            <h3>Privacy First</h3>
+            <p>
+              Audio is processed locally and sent directly to APIs. No recordings stored. Your
+              conversations stay private.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it Works Section -->
+    <section id="how-it-works" class="how-it-works">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Simple. Powerful. Automatic.</h2>
+          <p class="section-subtitle">Start a meeting and let AI do the heavy lifting.</p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h3>Start your meeting</h3>
+              <p>
+                Click the start button. Meeting Copilot begins capturing audio from your microphone.
+              </p>
+            </div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h3>Real-time analysis</h3>
+              <p>
+                Every 8 seconds, Claude AI analyzes the conversation and extracts structured
+                insights.
+              </p>
+            </div>
+          </div>
+          <div class="step-connector"></div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h3>Export & share</h3>
+              <p>When you're done, copy everything to Markdown and share with your team.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="download">
+      <div class="container">
+        <div class="download-card">
+          <h2>Ready to transform your meetings?</h2>
+          <p>Download Meeting Copilot for macOS and never miss an insight again.</p>
+          <a
+            href="#"
+            id="download-btn"
+            class="btn btn-primary btn-large"
+            data-repo="sderosiaux/meeting-copilot"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+            </svg>
+            <span id="download-text">Download for macOS</span>
+          </a>
+          <p class="download-note">Requires macOS 12+ · Intel & Apple Silicon</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-brand">
+            <a href="/" class="nav-logo">
+              <svg
+                class="nav-logo-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                />
+              </svg>
+              <span>Meeting Copilot</span>
+            </a>
+            <p>AI-powered meeting intelligence for productive teams.</p>
+          </div>
+          <div class="footer-links">
+            <a href="https://github.com/sderosiaux/meeting-copilot" target="_blank">GitHub</a>
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How it works</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 Meeting Copilot. Built with Claude AI.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
 </html>
