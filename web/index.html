@@ -55,12 +55,15 @@
           everything while you lead the conversation.
         </p>
         <div class="hero-cta">
-          <a href="#download" class="btn btn-primary">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
-            </svg>
-            Download for macOS
-          </a>
+          <div class="hero-cta-main">
+            <a href="#download" class="btn btn-primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+              </svg>
+              Download for macOS
+            </a>
+            <span class="hero-free">Free & open source</span>
+          </div>
           <a href="#how-it-works" class="btn btn-secondary">See how it works</a>
         </div>
         <div class="hero-image">
@@ -111,12 +114,15 @@
                   </div>
                 </div>
               </div>
-              <div class="mock-alert">
-                <span class="mock-alert-icon">⚠️</span>
-                <span
-                  ><strong>Loop detected:</strong> Timeline discussed 3× → Propose: Set deadline
-                  now</span
-                >
+              <div class="mock-tension-alert">
+                <div class="mock-tension-header">
+                  <span class="mock-tension-icon">↻</span>
+                  <span class="mock-tension-title">Loop Detected</span>
+                </div>
+                <div class="mock-tension-content">
+                  <span class="mock-tension-topic">"Timeline"</span> discussed 3×
+                </div>
+                <div class="mock-tension-suggestion">→ Set a deadline now to move forward</div>
               </div>
             </div>
           </div>
@@ -283,18 +289,18 @@
           <div class="about-text">
             <h2>Why I built this</h2>
             <p>
-              I'm in meetings all day. Important decisions get made, action items get assigned,
-              but by the end of the week, half of it is forgotten or buried in notes nobody reads.
+              I'm in meetings all day. Important decisions get made, action items get assigned, but
+              by the end of the week, half of it is forgotten or buried in notes nobody reads.
             </p>
             <p>
               I needed something different: a real-time collaborator that could catch what I miss.
-              When we're going in circles on a topic, I want to know immediately—not three meetings later.
-              When someone makes an assumption, I want it flagged so we can dig deeper right now,
-              not schedule another call to clarify.
+              When we're going in circles on a topic, I want to know immediately—not three meetings
+              later. When someone makes an assumption, I want it flagged so we can dig deeper right
+              now, not schedule another call to clarify.
             </p>
             <p>
-              Meeting Copilot is that AI collaborator. It listens, extracts what matters, and surfaces
-              the tensions before they become problems. Less time in follow-up meetings.
+              Meeting Copilot is that AI collaborator. It listens, extracts what matters, and
+              surfaces the tensions before they become problems. Less time in follow-up meetings.
               More time actually getting things done.
             </p>
           </div>
