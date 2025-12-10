@@ -703,36 +703,45 @@ a {
   color: #3178c6;
 }
 
-/* About Section */
-.about {
-  padding: 120px 0;
-  background: linear-gradient(180deg, var(--color-bg-elevated) 0%, var(--color-bg) 100%);
+/* About Page */
+.about-page {
+  min-height: calc(100vh - 200px);
+  padding: 120px 0 80px;
+  display: flex;
+  align-items: center;
 }
 
-.about-content {
+.about-page .about-content {
   max-width: 680px;
   margin: 0 auto;
 }
 
-.about-text h2 {
-  font-size: clamp(28px, 4vw, 36px);
+.about-page h1 {
+  font-size: clamp(36px, 5vw, 48px);
   font-weight: 700;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
   background: linear-gradient(135deg, var(--color-text), var(--color-text-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.about-text p {
+.about-page .about-text p {
   font-size: 17px;
   line-height: 1.8;
   color: var(--color-text-secondary);
   margin-bottom: 24px;
 }
 
-.about-text p:last-child {
+.about-page .about-text p:last-child {
   margin-bottom: 0;
+}
+
+.about-cta {
+  margin-top: 48px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 /* FAQ Section */
