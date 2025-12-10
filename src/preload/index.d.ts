@@ -1,5 +1,66 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
 
+// Meeting history types
+export interface MeetingListItem {
+  id: string
+  title: string
+  startTime: number
+  duration: number
+  summaryPreview: string
+  decisionsCount: number
+  actionsCount: number
+}
+
+export interface SavedMeeting {
+  id: string
+  title: string
+  startTime: number
+  endTime: number
+  duration: number
+  liveSummary: string[]
+  decisions: Array<{
+    id: string
+    text: string
+    owner?: string
+    timestamp: number
+    priority: 1 | 2 | 3
+  }>
+  actions: Array<{
+    id: string
+    text: string
+    owner?: string
+    deadline?: string
+    status: 'identified' | 'needs-clarification'
+    timestamp: number
+    priority: 1 | 2 | 3
+  }>
+  openQuestions: Array<{ id: string; text: string; priority: 1 | 2 | 3 }>
+  loops: Array<{
+    id: string
+    topic: string
+    occurrences: number
+    suggestion: string
+    firstDetected: number
+  }>
+  contradictions: Array<{
+    id: string
+    earlier: string
+    later: string
+    topic: string
+    suggestion: string
+  }>
+  implicitAssumptions: string[]
+  ambiguities: Array<{ id: string; point: string; clarifyingQuestion: string }>
+  detectedLanguage: 'en' | 'fr' | 'mixed'
+  transcript: string
+}
+
+export interface SearchResult {
+  meeting: MeetingListItem
+  matchType: 'title' | 'summary' | 'decision' | 'action' | 'transcript'
+  matchText: string
+}
+
 declare global {
   interface Window {
     electron: ElectronAPI
@@ -24,6 +85,13 @@ declare global {
       }) => Promise<{ success: boolean }>
       hasApiKeys: () => Promise<{ anthropic: boolean; deepgram: boolean }>
       onSettingsOpen: (callback: (data: { message: string }) => void) => () => void
+      // Meeting history
+      listMeetings: () => Promise<MeetingListItem[]>
+      getMeeting: (id: string) => Promise<SavedMeeting | null>
+      searchMeetings: (query: string) => Promise<SearchResult[]>
+      deleteMeeting: (id: string) => Promise<boolean>
+      updateMeetingTitle: (id: string, title: string) => Promise<boolean>
+      onMeetingSaved: (callback: (data: { id: string; title: string }) => void) => () => void
     }
   }
 }

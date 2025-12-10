@@ -11,6 +11,8 @@ import { TensionAlerts } from './components/TensionAlerts'
 import { DirectResponse } from './components/DirectResponse'
 import { Controls } from './components/Controls'
 import { SettingsModal } from './components/SettingsModal'
+import { MeetingHistory } from './components/MeetingHistory'
+import type { SavedMeeting } from '../../preload/index.d'
 
 function App(): React.JSX.Element {
   const status = useMeetingStore((state) => state.status)
@@ -33,6 +35,10 @@ function App(): React.JSX.Element {
 
   // Settings modal
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+
+  // History panel
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false)
+  const updateAnalysis = useMeetingStore((state) => state.updateAnalysis)
 
   // Track if we should show results after stopping
   const hasContent =
@@ -74,11 +80,46 @@ function App(): React.JSX.Element {
 
   const displayLevel = mainAudioLevel || audioLevel
   const isActive = status === 'recording' || status === 'processing'
+  const isRecording = status === 'recording' || status === 'processing' || status === 'paused'
+
+  // Handler for loading a past meeting
+  const handleSelectMeeting = (meeting: SavedMeeting): void => {
+    updateAnalysis({
+      liveSummary: meeting.liveSummary,
+      decisions: meeting.decisions,
+      actions: meeting.actions,
+      openQuestions: meeting.openQuestions,
+      loops: meeting.loops,
+      contradictions: meeting.contradictions,
+      implicitAssumptions: meeting.implicitAssumptions,
+      ambiguities: meeting.ambiguities,
+      detectedLanguage: meeting.detectedLanguage
+    })
+  }
 
   return (
     <div className="flex flex-col h-screen bg-neutral-50 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100">
-      {/* Drag region with settings button */}
-      <div className="h-10 drag-region flex-shrink-0 flex items-center justify-end px-4">
+      {/* Drag region with history and settings buttons */}
+      <div className="h-10 drag-region flex-shrink-0 flex items-center justify-end px-4 gap-1">
+        <button
+          onClick={() => setIsHistoryOpen(true)}
+          className="no-drag p-1.5 hover:bg-neutral-200 dark:hover:bg-neutral-800 rounded-lg transition-colors"
+          title="Meeting History"
+        >
+          <svg
+            className="w-5 h-5 text-neutral-500 dark:text-neutral-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </button>
         <button
           onClick={() => setIsSettingsOpen(true)}
           className="no-drag p-1.5 hover:bg-neutral-200 dark:hover:bg-neutral-800 rounded-lg transition-colors"
@@ -108,6 +149,14 @@ function App(): React.JSX.Element {
 
       {/* Settings Modal */}
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+
+      {/* Meeting History Panel */}
+      <MeetingHistory
+        isOpen={isHistoryOpen}
+        onClose={() => setIsHistoryOpen(false)}
+        onSelectMeeting={handleSelectMeeting}
+        isRecording={isRecording}
+      />
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto p-6">

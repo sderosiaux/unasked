@@ -4,6 +4,7 @@ import { getAudioCaptureService, AudioCaptureService } from './AudioCaptureServi
 import { getDeepgramService, DeepgramService, TranscriptionResult } from './DeepgramService'
 import { getClaudeService, ClaudeService, MeetingAnalysis } from './ClaudeService'
 import { getSecureStorage } from './SecureStorage'
+import { getMeetingStorageService } from './MeetingStorageService'
 import { spikelog } from './SpikelogService'
 
 export type MeetingStatus = 'idle' | 'recording' | 'paused' | 'processing'
@@ -37,6 +38,7 @@ export class MeetingStateManager extends EventEmitter {
   private state: MeetingState = this.getInitialState()
   private analysisInterval: NodeJS.Timeout | null = null
   private readonly ANALYSIS_INTERVAL = 8000 // Analyze every 8 seconds
+  private fullTranscript = '' // Full transcript accumulated during the meeting
 
   constructor() {
     super()
@@ -189,6 +191,7 @@ export class MeetingStateManager extends EventEmitter {
       status: 'recording',
       startTime: Date.now()
     }
+    this.fullTranscript = '' // Clear transcript for new meeting
 
     // Track active meeting started
     spikelog.activeMeetings(1)
@@ -252,6 +255,25 @@ export class MeetingStateManager extends EventEmitter {
       this.analysisInterval = null
     }
 
+    // Save meeting to history if there's content
+    const hasContent =
+      this.state.liveSummary.length > 0 ||
+      this.state.decisions.length > 0 ||
+      this.state.actions.length > 0 ||
+      this.fullTranscript.trim().length > 0
+
+    if (hasContent && this.state.startTime) {
+      try {
+        const storage = getMeetingStorageService()
+        const savedMeeting = storage.saveMeeting(this.state, this.fullTranscript.trim())
+        console.log(`Meeting saved to history: ${savedMeeting.id}`)
+        // Notify renderer that meeting was saved
+        this.sendToRenderer('meeting:saved', { id: savedMeeting.id, title: savedMeeting.title })
+      } catch (error) {
+        console.error('Failed to save meeting to history:', error)
+      }
+    }
+
     // Keep content, just set status to idle
     this.state.status = 'idle'
     this.broadcastState()
@@ -269,6 +291,7 @@ export class MeetingStateManager extends EventEmitter {
     }
 
     this.state = this.getInitialState()
+    this.fullTranscript = ''
     this.broadcastState()
   }
 
@@ -282,6 +305,11 @@ export class MeetingStateManager extends EventEmitter {
       } else if (this.state.detectedLanguage !== 'mixed') {
         this.state.detectedLanguage = transcription.language
       }
+    }
+
+    // Accumulate final transcriptions for saving
+    if (transcription.isFinal && transcription.text) {
+      this.fullTranscript += ' ' + transcription.text.trim()
     }
 
     // Send transcription update to renderer (for live display)

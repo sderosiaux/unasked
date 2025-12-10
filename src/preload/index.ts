@@ -83,7 +83,90 @@ const api = {
     return () => {
       ipcRenderer.removeListener('settings:open', handler)
     }
+  },
+
+  // Meeting history
+  listMeetings: (): Promise<MeetingListItem[]> => ipcRenderer.invoke('history:list'),
+  getMeeting: (id: string): Promise<SavedMeeting | null> => ipcRenderer.invoke('history:get', id),
+  searchMeetings: (query: string): Promise<SearchResult[]> =>
+    ipcRenderer.invoke('history:search', query),
+  deleteMeeting: (id: string): Promise<boolean> => ipcRenderer.invoke('history:delete', id),
+  updateMeetingTitle: (id: string, title: string): Promise<boolean> =>
+    ipcRenderer.invoke('history:updateTitle', id, title),
+
+  onMeetingSaved: (callback: (data: { id: string; title: string }) => void): (() => void) => {
+    const handler = (
+      _event: Electron.IpcRendererEvent,
+      data: { id: string; title: string }
+    ): void => {
+      callback(data)
+    }
+    ipcRenderer.on('meeting:saved', handler)
+    return () => {
+      ipcRenderer.removeListener('meeting:saved', handler)
+    }
   }
+}
+
+// Type definitions for meeting history (matching MeetingStorageService)
+interface MeetingListItem {
+  id: string
+  title: string
+  startTime: number
+  duration: number
+  summaryPreview: string
+  decisionsCount: number
+  actionsCount: number
+}
+
+interface SavedMeeting {
+  id: string
+  title: string
+  startTime: number
+  endTime: number
+  duration: number
+  liveSummary: string[]
+  decisions: Array<{
+    id: string
+    text: string
+    owner?: string
+    timestamp: number
+    priority: 1 | 2 | 3
+  }>
+  actions: Array<{
+    id: string
+    text: string
+    owner?: string
+    deadline?: string
+    status: 'identified' | 'needs-clarification'
+    timestamp: number
+    priority: 1 | 2 | 3
+  }>
+  openQuestions: Array<{ id: string; text: string; priority: 1 | 2 | 3 }>
+  loops: Array<{
+    id: string
+    topic: string
+    occurrences: number
+    suggestion: string
+    firstDetected: number
+  }>
+  contradictions: Array<{
+    id: string
+    earlier: string
+    later: string
+    topic: string
+    suggestion: string
+  }>
+  implicitAssumptions: string[]
+  ambiguities: Array<{ id: string; point: string; clarifyingQuestion: string }>
+  detectedLanguage: 'en' | 'fr' | 'mixed'
+  transcript: string
+}
+
+interface SearchResult {
+  meeting: MeetingListItem
+  matchType: 'title' | 'summary' | 'decision' | 'action' | 'transcript'
+  matchText: string
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

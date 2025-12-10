@@ -4,6 +4,7 @@ import { config } from 'dotenv'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { getMeetingStateManager } from './services/MeetingStateManager'
 import { getSecureStorage } from './services/SecureStorage'
+import { getMeetingStorageService } from './services/MeetingStorageService'
 
 // Load environment variables from .env file
 config()
@@ -86,6 +87,29 @@ app.whenReady().then(() => {
 
   ipcMain.handle('settings:hasApiKeys', () => {
     return secureStorage.hasApiKeys()
+  })
+
+  // Meeting history IPC handlers
+  const meetingStorage = getMeetingStorageService()
+
+  ipcMain.handle('history:list', () => {
+    return meetingStorage.listMeetings()
+  })
+
+  ipcMain.handle('history:get', (_event, id: string) => {
+    return meetingStorage.getMeeting(id)
+  })
+
+  ipcMain.handle('history:search', (_event, query: string) => {
+    return meetingStorage.searchMeetings(query)
+  })
+
+  ipcMain.handle('history:delete', (_event, id: string) => {
+    return meetingStorage.deleteMeeting(id)
+  })
+
+  ipcMain.handle('history:updateTitle', (_event, id: string, title: string) => {
+    return meetingStorage.updateMeetingTitle(id, title)
   })
 
   const mainWindow = createWindow()
