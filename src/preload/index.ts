@@ -62,7 +62,17 @@ const api = {
   // Send audio data from renderer to main process
   sendAudioData: (data: { samples: number[]; timestamp: number }): void => {
     ipcRenderer.send('audio:data', data)
-  }
+  },
+
+  // Settings
+  getSettings: (): Promise<{ anthropicApiKey?: string; deepgramApiKey?: string }> =>
+    ipcRenderer.invoke('settings:get'),
+  saveSettings: (settings: {
+    anthropicApiKey?: string
+    deepgramApiKey?: string
+  }): Promise<{ success: boolean }> => ipcRenderer.invoke('settings:save', settings),
+  hasApiKeys: (): Promise<{ anthropic: boolean; deepgram: boolean }> =>
+    ipcRenderer.invoke('settings:hasApiKeys')
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

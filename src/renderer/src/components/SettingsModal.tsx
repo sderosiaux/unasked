@@ -16,23 +16,36 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps): React.JS
     deepgramApiKey: ''
   })
   const [saved, setSaved] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Load settings from localStorage
-    const stored = localStorage.getItem('meeting-copilot-settings')
-    if (stored) {
-      try {
-        setSettings(JSON.parse(stored))
-      } catch {
-        // Invalid JSON, ignore
-      }
+    if (isOpen) {
+      // Load settings from secure storage via IPC
+      setLoading(true)
+      window.api
+        ?.getSettings()
+        .then((stored) => {
+          setSettings({
+            anthropicApiKey: stored?.anthropicApiKey || '',
+            deepgramApiKey: stored?.deepgramApiKey || ''
+          })
+        })
+        .catch(console.error)
+        .finally(() => setLoading(false))
     }
   }, [isOpen])
 
-  const handleSave = (): void => {
-    localStorage.setItem('meeting-copilot-settings', JSON.stringify(settings))
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
+  const handleSave = async (): Promise<void> => {
+    try {
+      await window.api?.saveSettings(settings)
+      setSaved(true)
+      setTimeout(() => {
+        setSaved(false)
+        onClose()
+      }, 1000)
+    } catch (error) {
+      console.error('Failed to save settings:', error)
+    }
   }
 
   if (!isOpen) return null
@@ -69,83 +82,91 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps): React.JS
 
         {/* Content */}
         <div className="p-6 space-y-6">
-          {/* API Keys Section */}
-          <div>
-            <h3 className="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide mb-4">
-              API Keys
-            </h3>
-
-            <div className="space-y-4">
-              <div>
-                <label
-                  htmlFor="anthropic-key"
-                  className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1"
-                >
-                  Anthropic API Key
-                </label>
-                <input
-                  id="anthropic-key"
-                  type="password"
-                  value={settings.anthropicApiKey}
-                  onChange={(e) =>
-                    setSettings((prev) => ({ ...prev, anthropicApiKey: e.target.value }))
-                  }
-                  placeholder="sk-ant-..."
-                  className="w-full px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg text-sm text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                />
-                <p className="mt-1 text-xs text-neutral-500">
-                  Required for Claude analysis.{' '}
-                  <a
-                    href="https://console.anthropic.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-violet-600 dark:text-violet-400 hover:underline"
-                  >
-                    Get an API key
-                  </a>
-                </p>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="deepgram-key"
-                  className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1"
-                >
-                  Deepgram API Key
-                </label>
-                <input
-                  id="deepgram-key"
-                  type="password"
-                  value={settings.deepgramApiKey}
-                  onChange={(e) =>
-                    setSettings((prev) => ({ ...prev, deepgramApiKey: e.target.value }))
-                  }
-                  placeholder="Enter your Deepgram API key"
-                  className="w-full px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg text-sm text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                />
-                <p className="mt-1 text-xs text-neutral-500">
-                  Required for real-time transcription.{' '}
-                  <a
-                    href="https://console.deepgram.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-violet-600 dark:text-violet-400 hover:underline"
-                  >
-                    Get an API key
-                  </a>
-                </p>
-              </div>
+          {loading ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="w-6 h-6 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
             </div>
-          </div>
+          ) : (
+            <>
+              {/* API Keys Section */}
+              <div>
+                <h3 className="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wide mb-4">
+                  API Keys
+                </h3>
 
-          {/* Info Notice */}
-          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
-            <p className="text-xs text-amber-800 dark:text-amber-200">
-              <strong>Note:</strong> API keys are stored locally and sent directly to the respective
-              services. For production use, configure keys in the{' '}
-              <code className="bg-amber-100 dark:bg-amber-900/50 px-1 rounded">.env</code> file.
-            </p>
-          </div>
+                <div className="space-y-4">
+                  <div>
+                    <label
+                      htmlFor="anthropic-key"
+                      className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1"
+                    >
+                      Anthropic API Key
+                    </label>
+                    <input
+                      id="anthropic-key"
+                      type="password"
+                      value={settings.anthropicApiKey}
+                      onChange={(e) =>
+                        setSettings((prev) => ({ ...prev, anthropicApiKey: e.target.value }))
+                      }
+                      placeholder="sk-ant-..."
+                      className="w-full px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg text-sm text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                    />
+                    <p className="mt-1 text-xs text-neutral-500">
+                      Required for AI analysis.{' '}
+                      <a
+                        href="https://console.anthropic.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-violet-600 dark:text-violet-400 hover:underline"
+                      >
+                        Get an API key
+                      </a>
+                    </p>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="deepgram-key"
+                      className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1"
+                    >
+                      Deepgram API Key
+                    </label>
+                    <input
+                      id="deepgram-key"
+                      type="password"
+                      value={settings.deepgramApiKey}
+                      onChange={(e) =>
+                        setSettings((prev) => ({ ...prev, deepgramApiKey: e.target.value }))
+                      }
+                      placeholder="Enter your Deepgram API key"
+                      className="w-full px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg text-sm text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                    />
+                    <p className="mt-1 text-xs text-neutral-500">
+                      Required for transcription.{' '}
+                      <a
+                        href="https://console.deepgram.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-violet-600 dark:text-violet-400 hover:underline"
+                      >
+                        Get an API key
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Info Notice */}
+              <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-3">
+                <p className="text-xs text-emerald-800 dark:text-emerald-200">
+                  <strong>Secure:</strong> Your API keys are encrypted and stored locally using your
+                  system keychain. They are never sent to any server except the respective API
+                  providers.
+                </p>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Footer */}
@@ -158,7 +179,8 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps): React.JS
           </button>
           <button
             onClick={handleSave}
-            className="px-4 py-2 text-sm font-medium text-white bg-violet-600 hover:bg-violet-700 rounded-lg transition-colors"
+            disabled={loading}
+            className="px-4 py-2 text-sm font-medium text-white bg-violet-600 hover:bg-violet-700 disabled:opacity-50 rounded-lg transition-colors"
           >
             {saved ? 'Saved!' : 'Save'}
           </button>

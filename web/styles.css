@@ -637,6 +637,77 @@ a {
   color: #3178c6;
 }
 
+/* About Section */
+.about {
+  padding: 120px 0;
+  background: linear-gradient(180deg, var(--color-bg-elevated) 0%, var(--color-bg) 100%);
+}
+
+.about-content {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.about-text h2 {
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 700;
+  margin-bottom: 32px;
+  background: linear-gradient(135deg, var(--color-text), var(--color-text-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.about-text p {
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--color-text-secondary);
+  margin-bottom: 24px;
+}
+
+.about-text p:last-child {
+  margin-bottom: 0;
+}
+
+/* FAQ Section */
+.faq {
+  padding: 120px 0;
+  background: var(--color-bg);
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 32px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  padding: 24px;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--transition-base);
+}
+
+.faq-item:hover {
+  border-color: var(--color-border);
+}
+
+.faq-item h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--color-text);
+}
+
+.faq-item p {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
 /* Download Section */
 .download {
   padding: 120px 0;

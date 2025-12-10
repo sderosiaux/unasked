@@ -3,6 +3,7 @@ import { EventEmitter } from 'events'
 import { getAudioCaptureService, AudioCaptureService } from './AudioCaptureService'
 import { getDeepgramService, DeepgramService, TranscriptionResult } from './DeepgramService'
 import { getClaudeService, ClaudeService, MeetingAnalysis } from './ClaudeService'
+import { getSecureStorage } from './SecureStorage'
 
 export type MeetingStatus = 'idle' | 'recording' | 'paused' | 'processing'
 
@@ -137,11 +138,15 @@ export class MeetingStateManager extends EventEmitter {
   }
 
   async initialize(): Promise<void> {
+    // Get API keys from secure storage (falls back to env vars)
+    const secureStorage = getSecureStorage()
+    const settings = secureStorage.getSettings()
+
     // Initialize Deepgram
-    this.deepgramService.initialize()
+    this.deepgramService.initialize(settings.deepgramApiKey)
 
     // Initialize Claude
-    this.claudeService.initialize()
+    this.claudeService.initialize(settings.anthropicApiKey)
 
     console.log('MeetingStateManager initialized')
   }

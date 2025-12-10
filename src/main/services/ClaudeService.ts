@@ -255,16 +255,16 @@ export class ClaudeService extends EventEmitter {
     super()
   }
 
-  initialize(): void {
-    const apiKey = process.env.ANTHROPIC_API_KEY
+  initialize(apiKey?: string): void {
+    const key = apiKey || process.env.ANTHROPIC_API_KEY
 
-    if (!apiKey) {
+    if (!key) {
       console.warn('ANTHROPIC_API_KEY not set - Claude analysis will be disabled')
       this.emit('warning', 'API key not configured')
       return
     }
 
-    this.client = new Anthropic({ apiKey })
+    this.client = new Anthropic({ apiKey: key })
     this.emit('ready')
   }
 

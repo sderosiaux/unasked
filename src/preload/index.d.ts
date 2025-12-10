@@ -15,6 +15,13 @@ declare global {
       onAudioLevel: (callback: (level: number) => void) => () => void
       onError: (callback: (error: { message: string; error?: string }) => void) => () => void
       sendAudioData: (data: { samples: number[]; timestamp: number }) => void
+      // Settings
+      getSettings: () => Promise<{ anthropicApiKey?: string; deepgramApiKey?: string }>
+      saveSettings: (settings: {
+        anthropicApiKey?: string
+        deepgramApiKey?: string
+      }) => Promise<{ success: boolean }>
+      hasApiKeys: () => Promise<{ anthropic: boolean; deepgram: boolean }>
     }
   }
 }

@@ -10,6 +10,7 @@ import { OpenQuestions } from './components/OpenQuestions'
 import { TensionAlerts } from './components/TensionAlerts'
 import { DirectResponse } from './components/DirectResponse'
 import { Controls } from './components/Controls'
+import { SettingsModal } from './components/SettingsModal'
 
 function App(): React.JSX.Element {
   const status = useMeetingStore((state) => state.status)
@@ -29,6 +30,9 @@ function App(): React.JSX.Element {
 
   // Listen for audio level updates from main process
   const [mainAudioLevel, setMainAudioLevel] = useState(0)
+
+  // Settings modal
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   // Track if we should show results after stopping
   const hasContent =
@@ -65,8 +69,37 @@ function App(): React.JSX.Element {
 
   return (
     <div className="flex flex-col h-screen bg-neutral-50 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100">
-      {/* Drag region - thin bar at top */}
-      <div className="h-6 drag-region flex-shrink-0" />
+      {/* Drag region with settings button */}
+      <div className="h-10 drag-region flex-shrink-0 flex items-center justify-end px-4">
+        <button
+          onClick={() => setIsSettingsOpen(true)}
+          className="no-drag p-1.5 hover:bg-neutral-200 dark:hover:bg-neutral-800 rounded-lg transition-colors"
+          title="Settings"
+        >
+          <svg
+            className="w-5 h-5 text-neutral-500 dark:text-neutral-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </svg>
+        </button>
+      </div>
+
+      {/* Settings Modal */}
+      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto p-6">

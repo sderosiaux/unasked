@@ -3,6 +3,7 @@ import { join } from 'path'
 import { config } from 'dotenv'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { getMeetingStateManager } from './services/MeetingStateManager'
+import { getSecureStorage } from './services/SecureStorage'
 
 // Load environment variables from .env file
 config()
@@ -65,6 +66,25 @@ app.whenReady().then(() => {
 
   // IPC handlers
   ipcMain.handle('ping', () => 'pong')
+
+  // Settings IPC handlers
+  const secureStorage = getSecureStorage()
+
+  ipcMain.handle('settings:get', () => {
+    return secureStorage.getSettings()
+  })
+
+  ipcMain.handle(
+    'settings:save',
+    (_event, settings: { anthropicApiKey?: string; deepgramApiKey?: string }) => {
+      secureStorage.saveSettings(settings)
+      return { success: true }
+    }
+  )
+
+  ipcMain.handle('settings:hasApiKeys', () => {
+    return secureStorage.hasApiKeys()
+  })
 
   const mainWindow = createWindow()
 
