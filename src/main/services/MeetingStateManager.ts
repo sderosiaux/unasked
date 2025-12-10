@@ -119,6 +119,10 @@ export class MeetingStateManager extends EventEmitter {
       this.resume()
     })
 
+    ipcMain.handle('meeting:stop', () => {
+      this.stop()
+    })
+
     ipcMain.handle('meeting:reset', () => {
       this.reset()
     })
@@ -231,14 +235,30 @@ export class MeetingStateManager extends EventEmitter {
     this.broadcastState()
   }
 
-  reset(): void {
-    // Track meeting duration before reset
+  stop(): void {
+    // Track meeting duration
     if (this.state.startTime) {
       const durationMinutes = (Date.now() - this.state.startTime) / 1000 / 60
-      spikelog.meetingDuration(Math.round(durationMinutes * 10) / 10) // 1 decimal place
+      spikelog.meetingDuration(Math.round(durationMinutes * 10) / 10)
       spikelog.activeMeetings(-1)
     }
 
+    this.audioService.stop()
+    this.deepgramService.endSession()
+    this.claudeService.reset()
+
+    if (this.analysisInterval) {
+      clearInterval(this.analysisInterval)
+      this.analysisInterval = null
+    }
+
+    // Keep content, just set status to idle
+    this.state.status = 'idle'
+    this.broadcastState()
+  }
+
+  reset(): void {
+    // Stop services if running
     this.audioService.stop()
     this.deepgramService.endSession()
     this.claudeService.reset()

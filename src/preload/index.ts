@@ -7,6 +7,7 @@ const api = {
   startMeeting: (): Promise<void> => ipcRenderer.invoke('meeting:start'),
   pauseMeeting: (): Promise<void> => ipcRenderer.invoke('meeting:pause'),
   resumeMeeting: (): Promise<void> => ipcRenderer.invoke('meeting:resume'),
+  stopMeeting: (): Promise<void> => ipcRenderer.invoke('meeting:stop'),
   resetMeeting: (): Promise<void> => ipcRenderer.invoke('meeting:reset'),
 
   // Audio control

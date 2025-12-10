@@ -7,6 +7,7 @@ declare global {
       startMeeting: () => Promise<void>
       pauseMeeting: () => Promise<void>
       resumeMeeting: () => Promise<void>
+      stopMeeting: () => Promise<void>
       resetMeeting: () => Promise<void>
       getAudioDevices: () => Promise<{ deviceId: string; label: string; kind: string }[]>
       setAudioDevice: (deviceId: string) => Promise<void>

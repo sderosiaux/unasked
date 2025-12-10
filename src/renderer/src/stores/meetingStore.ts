@@ -141,9 +141,8 @@ export const useMeetingStore = create<MeetingState>((set, get) => ({
   },
 
   stop: () => {
-    // Stop recording but keep the content
-    set({ status: 'idle' })
-    window.api?.resetMeeting()
+    // Stop recording but keep the content (just set local status, backend will handle the rest)
+    window.api?.stopMeeting()
   },
 
   addTranscriptionChunk: (chunk: TranscriptionChunk) => {
